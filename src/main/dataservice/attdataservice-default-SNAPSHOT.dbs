@@ -1,4 +1,4 @@
-<data name="attdataservice-default-SNAPSHOT">
+<data name="attdataservice-default-SNAPSHOT" serviceNamespace="" enableBatchRequests="true">
     <!--database connection code with config id default-->
     <config id="default">
         <property name="driverClassName">com.mysql.jdbc.Driver</property>
@@ -25,7 +25,8 @@
         </result>
     </query>
     <query id="update_library_query" useConfig="default">
-        <sql>UPDATE library SET category_id=?,title=?,published_date=?,url=? WHERE content_id=?
+        <sql>UPDATE `library` SET `category_id`=?,`title`=?,`published_date`=?,`url`=? WHERE
+            `content_id`=?
         </sql>
         <param name="category_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
         <param name="title" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"/>
@@ -34,15 +35,16 @@
         <param name="content_id" ordinal="5" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
     </query>
     <query id="update_content_query" useConfig="default">
-        <sql>UPDATE content SET level=?,presenter=?,reads=? WHERE content_id=?</sql>
+        <sql>UPDATE content SET `level`=?,`presenter`=?,`reads`=? WHERE `content_id`=?</sql>
         <param name="level" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"/>
         <param name="presenter" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"/>
         <param name="reads" ordinal="3" paramType="SCALAR" sqlType="STRING" type="IN"/>
         <param name="content_id" ordinal="4" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
     </query>
     <query id="delete_content_tag_query" useConfig="default">
-        <sql>DELETE FROM content_tag WHERE content_id=?</sql>
-        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+        <sql>DELETE FROM content_tag WHERE tag_id=? AND content_id=?</sql>
+        <param name="tag_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+        <param name="content_id" ordinal="2" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
     </query>
     <query id="delete_category_query" useConfig="default">
         <sql>DELETE FROM category WHERE category_id=?</sql>
@@ -103,10 +105,20 @@
         <param name="presenter" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"/>
     </query>
     <query id="select_with_key_library_query" useConfig="default">
-        <sql>SELECT content_id, category_id, title, published_date, url FROM library WHERE
-            content_id=?
-        </sql>
+        <sql>SELECT * FROM library WHERE `content_id`=?</sql>
         <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+        <result element="libraryCollection" rowName="library">
+            <element column="content_id" name="content_id" xsdType="xs:integer"/>
+            <element column="category_id" name="category_id" xsdType="xs:integer"/>
+            <element column="title" name="title" xsdType="xs:string"/>
+            <element column="published_date" name="published_date" xsdType="xs:date"/>
+            <element column="url" name="url" xsdType="xs:string"/>
+        </result>
+    </query>
+    <query id="select_last_added_library_query" useConfig="default">
+        <sql>SELECT * FROM library WHERE title=? AND category_id=?</sql>
+        <param name="title" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"/>
+        <param name="category_id" ordinal="2" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
         <result element="libraryCollection" rowName="library">
             <element column="content_id" name="content_id" xsdType="xs:integer"/>
             <element column="category_id" name="category_id" xsdType="xs:integer"/>
@@ -151,7 +163,7 @@
         <param name="category_name" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"/>
     </query>
     <query id="insert_content_query" useConfig="default">
-        <sql>INSERT INTO content(content_id,level,presenter,reads) VALUES(?,?,?,?)</sql>
+        <sql>INSERT INTO content VALUES(?,?,?,?)</sql>
         <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
         <param name="level" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"/>
         <param name="presenter" ordinal="3" paramType="SCALAR" sqlType="STRING" type="IN"/>
@@ -187,7 +199,7 @@
         <param name="role" ordinal="5" paramType="SCALAR" sqlType="STRING" type="IN"/>
     </query>
     <query id="select_all_content_query" useConfig="default">
-        <sql>SELECT content_id, level, presenter, reads FROM content</sql>
+        <sql>SELECT * FROM content</sql>
         <result element="contentCollection" rowName="content">
             <element column="content_id" name="content_id" xsdType="xs:integer"/>
             <element column="level" name="level" xsdType="xs:string"/>
@@ -279,8 +291,8 @@
             <with-param name="category_name" query-param="category_name"/>
         </call-query>
     </operation>
-    <operation name="insert_library_operation">
-        <call-query href="insert_library_query">
+    <operation name="insert_library_operation" returnRequestStatus="true">
+    <call-query href="insert_library_query">
             <with-param name="published_date" query-param="published_date"/>
             <with-param name="title" query-param="title"/>
             <with-param name="category_id" query-param="category_id"/>
@@ -321,6 +333,7 @@
     <operation name="delete_content_tag_operation">
         <call-query href="delete_content_tag_query">
             <with-param name="content_id" query-param="content_id"/>
+            <with-param name="tag_id" query-param="tag_id"/>
         </call-query>
     </operation>
     <operation name="update_category_operation">
@@ -430,6 +443,160 @@
     <operation name="select_all_content_tag_operation">
         <call-query href="select_all_content_tag_query"/>
     </operation>
+    <operation name="select_last_added_library_operation">
+        <call-query href="select_last_added_library_query">
+            <with-param name="title" query-param="title"/>
+            <with-param name="category_id" query-param="category_id"/>
+        </call-query>
+    </operation>
+
+    <resource method="POST" path="/insertLibraryResource" returnRequestStatus="true">
+        <call-query href="insert_library_query">
+            <with-param name="published_date" query-param="published_date"/>
+            <with-param name="title" query-param="title"/>
+            <with-param name="category_id" query-param="category_id"/>
+            <with-param name="url" query-param="url"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/insertContentResource" returnRequestStatus="true">
+        <call-query href="insert_content_query">
+            <with-param name="reads" query-param="reads"/>
+            <with-param name="level" query-param="level"/>
+            <with-param name="content_id" query-param="content_id"/>
+            <with-param name="presenter" query-param="presenter"/>
+        </call-query>
+    </resource>
+
+    <resource method="POST" path="/selectLastAddedLibraryResource" returnRequestStatus="true">
+        <call-query href="select_last_added_library_query">
+            <with-param name="title" query-param="title"/>
+            <with-param name="category_id" query-param="category_id"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/insertWebinarResource" returnRequestStatus="true">
+        <call-query href="insert_webinar_query">
+            <with-param name="content_id" query-param="content_id"/>
+            <with-param name="presenter" query-param="presenter"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/insertContentTagResource" returnRequestStatus="true">
+        <call-query href="insert_content_tag_query">
+            <with-param name="content_id" query-param="content_id"/>
+            <with-param name="tag_id" query-param="tag_id"/>
+        </call-query>
+    </resource>
+
+    <query id="select_last_added_tag_query" useConfig="default">
+        <sql>SELECT * FROM tag WHERE tag_name=?</sql>
+        <param name="tag_name" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"/>
+        <result element="tagCollection" rowName="tag">
+            <element column="tag_name" name="tag_name" xsdType="xs:integer"/>
+            <element column="tag_id" name="tag_id" xsdType="xs:integer"/>
+        </result>
+    </query>
+    <operation name="select_last_added_tag_operation">
+        <call-query href="select_last_added_tag_query">
+            <with-param name="tag_name" query-param="tag_name"/>
+        </call-query>
+    </operation>
+    <resource method="POST" path="/selectLastAddedTagResource" returnRequestStatus="true">
+        <call-query href="select_last_added_tag_query">
+            <with-param name="tag_name" query-param="tag_name"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/insertTagResource" returnRequestStatus="true">
+        <call-query href="insert_tag_query">
+            <with-param name="tag_name" query-param="tag_name"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/updateLibraryResource" returnRequestStatus="true">
+        <call-query href="update_library_query">
+            <with-param name="published_date" query-param="published_date"/>
+            <with-param name="title" query-param="title"/>
+            <with-param name="content_id" query-param="content_id"/>
+            <with-param name="category_id" query-param="category_id"/>
+            <with-param name="url" query-param="url"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/selectWithKeyLibraryResource" returnRequestStatus="true">
+        <call-query href="select_with_key_library_query">
+            <with-param name="content_id" query-param="content_id"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/selectWithKeyContentTagResource" returnRequestStatus="true">
+        <call-query href="select_with_key_content_tag_query">
+            <with-param name="content_id" query-param="content_id"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/updateContentResource" returnRequestStatus="true">
+        <call-query href="update_content_query">
+            <with-param name="reads" query-param="reads"/>
+            <with-param name="content_id" query-param="content_id"/>
+            <with-param name="level" query-param="level"/>
+            <with-param name="presenter" query-param="presenter"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/deleteContentTagResource" returnRequestStatus="true">
+        <call-query href="delete_content_tag_query">
+            <with-param name="content_id" query-param="content_id"/>
+            <with-param name="tag_id" query-param="tag_id"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/updateWebinarResource" returnRequestStatus="true">
+        <call-query href="update_webinar_query">
+            <with-param name="content_id" query-param="content_id"/>
+            <with-param name="presenter" query-param="presenter"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/deleteWebinarResource" name="delete_webinar_operation">
+        <call-query href="delete_webinar_query">
+            <with-param name="content_id" query-param="content_id"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/deleteLibraryResource" returnRequestStatus="true">
+        <call-query href="delete_library_query">
+            <with-param name="content_id" query-param="content_id"/>
+        </call-query>
+    </resource>
+    <resource method="POST" path="/deleteContentResource" returnRequestStatus="true">
+        <call-query href="delete_content_query">
+            <with-param name="content_id" query-param="content_id"/>
+        </call-query>
+    </resource>
+    <query id="select_with_name_tag_query" useConfig="default">
+        <sql>SELECT * FROM tag WHERE tag_name=? LIMIT 0, 100</sql>
+        <param name="tag_name" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+        <result element="tagCollection" rowName="tag">
+            <element column="tag_id" name="tag_id" xsdType="xs:integer"/>
+            <element column="tag_name" name="tag_name" xsdType="xs:string"/>
+        </result>
+    </query>
+    <operation name="select_with_name_tag_operation">
+        <call-query href="select_with_name_tag_query">
+            <with-param name="tag_name" query-param="tag_name"/>
+        </call-query>
+    </operation>
+
+    <resource method="POST" path="/selectWithNameTagResource" returnRequestStatus="true">
+        <call-query href="select_with_name_tag_query">
+            <with-param name="tag_name" query-param="tag_name"/>
+        </call-query>
+    </resource>
+    <resource method="GET" path="/selectAllLibraryResource">
+        <call-query href="select_all_library_query"/>
+    </resource>
+    <resource method="GET" path="/selectAllContentResource">
+        <call-query href="select_all_content_query"/>
+    </resource>
+    <resource method="GET" path="/selectAllWebinarResource">
+        <call-query href="select_all_webinar_query"/>
+    </resource>
+    <resource method="GET" path="/selectAllContentTagResource">
+        <call-query href="select_all_content_tag_query"/>
+    </resource>
+    <resource method="GET" path="/selectAllCategoryResource">
+        <call-query href="select_all_category_query"/>
+    </resource>
     <!--resource method="GET" path="getTag" returnRequestStatus="true">
         <call-query href="SQL_getTag">
             <with-param name="tag_name" query-param="tag_name"/>
