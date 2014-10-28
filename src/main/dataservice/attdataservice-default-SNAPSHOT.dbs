@@ -7,7 +7,7 @@
         <property name="password">att#11</property>
 
     </config>
-    <query id="select_all_library_query_JSON" useConfig="default">
+    <!--<query id="select_all_library_query_JSON" useConfig="default">
         <sql>SELECT content_id, category_id, title, published_date, url FROM library</sql>
         <result outputType="json">
             <element column="content_id" name="content_id" xsdType="xs:integer"/>
@@ -21,7 +21,7 @@
     </query>
     <operation name="select_all_library_operation_JSON">
         <call-query href="select_all_library_query_JSON"/>
-    </operation>
+    </operation>-->
     <query id="select_all_library_query" useConfig="default">
         <sql>SELECT content_id, category_id, title, published_date, url FROM library</sql>
         <result element="libraryCollection" rowName="library">
