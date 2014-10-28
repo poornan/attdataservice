@@ -1,0 +1,439 @@
+<data name="attdataservice-default-0.0.1">
+    <!--database connection code with config id default-->
+    <config id="default">
+        <property name="driverClassName">com.mysql.jdbc.Driver</property>
+        <property name="url">jdbc:mysql://mysql-dev-01.cloud.wso2.com:3306/attdb_ananthanesh4519</property>
+        <property name="username">attuser_Ysj2dWLI</property>
+        <property name="password">att#11</property>
+
+    </config>
+    <query id="select_all_library_query" useConfig="default">
+        <sql>SELECT content_id, category_id, title, published_date, url FROM library</sql>
+        <result element="libraryCollection" rowName="library">
+            <element column="content_id" name="content_id" xsdType="xs:integer"></element>
+            <element column="category_id" name="category_id" xsdType="xs:integer"></element>
+            <element column="title" name="title" xsdType="xs:string"></element>
+            <element column="published_date" name="published_date" xsdType="xs:date"></element>
+            <element column="url" name="url" xsdType="xs:string"></element>
+        </result>
+    </query>
+    <query id="select_all_tag_query" useConfig="default">
+        <sql>SELECT tag_id, tag_name FROM tag</sql>
+        <result element="tagCollection" rowName="tag">
+            <element column="tag_id" name="tag_id" xsdType="xs:integer"></element>
+            <element column="tag_name" name="tag_name" xsdType="xs:string"></element>
+        </result>
+    </query>
+    <query id="update_library_query" useConfig="default">
+        <sql>UPDATE library SET category_id=?,title=?,published_date=?,url=? WHERE content_id=?
+        </sql>
+        <param name="category_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <param name="title" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="published_date" ordinal="3" paramType="SCALAR" sqlType="DATE" type="IN"></param>
+        <param name="url" ordinal="4" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="content_id" ordinal="5" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="update_content_query" useConfig="default">
+        <sql>UPDATE content SET level=?,presenter=?,reads=? WHERE content_id=?</sql>
+        <param name="level" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="presenter" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="reads" ordinal="3" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="content_id" ordinal="4" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="delete_content_tag_query" useConfig="default">
+        <sql>DELETE FROM content_tag WHERE content_id=?</sql>
+        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="delete_category_query" useConfig="default">
+        <sql>DELETE FROM category WHERE category_id=?</sql>
+        <param name="category_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="select_with_key_webinar_query" useConfig="default">
+        <sql>SELECT content_id, presenter FROM webinar WHERE content_id=?</sql>
+        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <result element="webinarCollection" rowName="webinar">
+            <element column="content_id" name="content_id" xsdType="xs:integer"></element>
+            <element column="presenter" name="presenter" xsdType="xs:string"></element>
+        </result>
+    </query>
+    <query id="delete_user_query" useConfig="default">
+        <sql>DELETE FROM user WHERE user_id=?</sql>
+        <param name="user_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="select_all_category_query" useConfig="default">
+        <sql>SELECT category_id, category_name FROM category</sql>
+        <result element="categoryCollection" rowName="category">
+            <element column="category_id" name="category_id" xsdType="xs:integer"></element>
+            <element column="category_name" name="category_name" xsdType="xs:string"></element>
+        </result>
+    </query>
+    <query id="select_all_content_tag_query" useConfig="default">
+        <sql>SELECT tag_id, content_id FROM content_tag</sql>
+        <result element="content_tagCollection" rowName="content_tag">
+            <element column="tag_id" name="tag_id" xsdType="xs:integer"></element>
+            <element column="content_id" name="content_id" xsdType="xs:integer"></element>
+        </result>
+    </query>
+    <query id="select_with_key_user_query" useConfig="default">
+        <sql>SELECT user_id, password, first_name, last_name, role FROM user WHERE user_id=?</sql>
+        <param name="user_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <result element="userCollection" rowName="user">
+            <element column="user_id" name="user_id" xsdType="xs:integer"></element>
+            <element column="password" name="password" xsdType="xs:string"></element>
+            <element column="first_name" name="first_name" xsdType="xs:string"></element>
+            <element column="last_name" name="last_name" xsdType="xs:string"></element>
+            <element column="role" name="role" xsdType="xs:string"></element>
+        </result>
+    </query>
+    <query id="update_user_query" useConfig="default">
+        <sql>UPDATE user SET password=?,first_name=?,last_name=?,role=? WHERE user_id=?</sql>
+        <param name="password" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="first_name" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="last_name" ordinal="3" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="role" ordinal="4" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="user_id" ordinal="5" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="insert_tag_query" useConfig="default">
+        <sql>INSERT INTO tag(tag_name) VALUES(?)</sql>
+        <param name="tag_name" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+    </query>
+    <query id="insert_webinar_query" useConfig="default">
+        <sql>INSERT INTO webinar(content_id,presenter) VALUES(?,?)</sql>
+        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <param name="presenter" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+    </query>
+    <query id="select_with_key_library_query" useConfig="default">
+        <sql>SELECT content_id, category_id, title, published_date, url FROM library WHERE
+            content_id=?
+        </sql>
+        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <result element="libraryCollection" rowName="library">
+            <element column="content_id" name="content_id" xsdType="xs:integer"></element>
+            <element column="category_id" name="category_id" xsdType="xs:integer"></element>
+            <element column="title" name="title" xsdType="xs:string"></element>
+            <element column="published_date" name="published_date" xsdType="xs:date"></element>
+            <element column="url" name="url" xsdType="xs:string"></element>
+        </result>
+    </query>
+    <query id="update_category_query" useConfig="default">
+        <sql>UPDATE category SET category_name=? WHERE category_id=?</sql>
+        <param name="category_name" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="category_id" ordinal="2" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="select_with_key_tag_query" useConfig="default">
+        <sql>SELECT tag_id, tag_name FROM tag WHERE tag_id=?</sql>
+        <param name="tag_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <result element="tagCollection" rowName="tag">
+            <element column="tag_id" name="tag_id" xsdType="xs:integer"></element>
+            <element column="tag_name" name="tag_name" xsdType="xs:string"></element>
+        </result>
+    </query>
+    <query id="select_with_key_category_query" useConfig="default">
+        <sql>SELECT category_id, category_name FROM category WHERE category_id=?</sql>
+        <param name="category_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <result element="categoryCollection" rowName="category">
+            <element column="category_id" name="category_id" xsdType="xs:integer"></element>
+            <element column="category_name" name="category_name" xsdType="xs:string"></element>
+        </result>
+    </query>
+    <query id="update_tag_query" useConfig="default">
+        <sql>UPDATE tag SET tag_name=? WHERE tag_id=?</sql>
+        <param name="tag_name" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="tag_id" ordinal="2" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="update_webinar_query" useConfig="default">
+        <sql>UPDATE webinar SET presenter=? WHERE content_id=?</sql>
+        <param name="presenter" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="content_id" ordinal="2" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="insert_category_query" useConfig="default">
+        <sql>INSERT INTO category(category_name) VALUES(?)</sql>
+        <param name="category_name" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+    </query>
+    <query id="insert_content_query" useConfig="default">
+        <sql>INSERT INTO content(content_id,level,presenter,reads) VALUES(?,?,?,?)</sql>
+        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <param name="level" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="presenter" ordinal="3" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="reads" ordinal="4" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+    </query>
+    <query id="delete_library_query" useConfig="default">
+        <sql>DELETE FROM library WHERE content_id=?</sql>
+        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="select_all_user_query" useConfig="default">
+        <sql>SELECT user_id, password, first_name, last_name, role FROM user</sql>
+        <result element="userCollection" rowName="user">
+            <element column="user_id" name="user_id" xsdType="xs:integer"></element>
+            <element column="password" name="password" xsdType="xs:string"></element>
+            <element column="first_name" name="first_name" xsdType="xs:string"></element>
+            <element column="last_name" name="last_name" xsdType="xs:string"></element>
+            <element column="role" name="role" xsdType="xs:string"></element>
+        </result>
+    </query>
+    <query id="insert_library_query" useConfig="default">
+        <sql>INSERT INTO library(category_id,title,published_date,url) VALUES(?,?,?,?)</sql>
+        <param name="category_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <param name="title" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="published_date" ordinal="3" paramType="SCALAR" sqlType="DATE" type="IN"></param>
+        <param name="url" ordinal="4" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+    </query>
+    <query id="insert_user_query" useConfig="default">
+        <sql>INSERT INTO user(user_id,password,first_name,last_name,role) VALUES(?,?,?,?,?)</sql>
+        <param name="user_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <param name="password" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="first_name" ordinal="3" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="last_name" ordinal="4" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+        <param name="role" ordinal="5" paramType="SCALAR" sqlType="STRING" type="IN"></param>
+    </query>
+    <query id="select_all_content_query" useConfig="default">
+        <sql>SELECT content_id, level, presenter, reads FROM content</sql>
+        <result element="contentCollection" rowName="content">
+            <element column="content_id" name="content_id" xsdType="xs:integer"></element>
+            <element column="level" name="level" xsdType="xs:string"></element>
+            <element column="presenter" name="presenter" xsdType="xs:string"></element>
+            <element column="reads" name="reads" xsdType="xs:string"></element>
+        </result>
+    </query>
+    <query id="delete_webinar_query" useConfig="default">
+        <sql>DELETE FROM webinar WHERE content_id=?</sql>
+        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="select_all_webinar_query" useConfig="default">
+        <sql>SELECT content_id, presenter FROM webinar</sql>
+        <result element="webinarCollection" rowName="webinar">
+            <element column="content_id" name="content_id" xsdType="xs:integer"></element>
+            <element column="presenter" name="presenter" xsdType="xs:string"></element>
+        </result>
+    </query>
+    <query id="update_content_tag_query" useConfig="default">
+        <sql>UPDATE content_tag SET tag_id=? WHERE content_id=?</sql>
+        <param name="tag_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <param name="content_id" ordinal="2" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="delete_content_query" useConfig="default">
+        <sql>DELETE FROM content WHERE content_id=?</sql>
+        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="select_with_key_content_query" useConfig="default">
+        <sql>SELECT content_id, level, presenter, reads FROM content WHERE content_id=?</sql>
+        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <result element="contentCollection" rowName="content">
+            <element column="content_id" name="content_id" xsdType="xs:integer"></element>
+            <element column="level" name="level" xsdType="xs:string"></element>
+            <element column="presenter" name="presenter" xsdType="xs:string"></element>
+            <element column="reads" name="reads" xsdType="xs:string"></element>
+        </result>
+    </query>
+    <query id="select_with_key_content_tag_query" useConfig="default">
+        <sql>SELECT tag_id, content_id FROM content_tag WHERE content_id=?</sql>
+        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <result element="content_tagCollection" rowName="content_tag">
+            <element column="tag_id" name="tag_id" xsdType="xs:integer"></element>
+            <element column="content_id" name="content_id" xsdType="xs:integer"></element>
+        </result>
+    </query>
+    <query id="insert_content_tag_query" useConfig="default">
+        <sql>INSERT INTO content_tag(tag_id,content_id) VALUES(?,?)</sql>
+        <param name="tag_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+        <param name="content_id" ordinal="2" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <query id="delete_tag_query" useConfig="default">
+        <sql>DELETE FROM tag WHERE tag_id=?</sql>
+        <param name="tag_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"></param>
+    </query>
+    <operation name="insert_content_tag_operation">
+        <call-query href="insert_content_tag_query">
+            <with-param name="content_id" query-param="content_id"></with-param>
+            <with-param name="tag_id" query-param="tag_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="update_user_operation">
+        <call-query href="update_user_query">
+            <with-param name="first_name" query-param="first_name"></with-param>
+            <with-param name="last_name" query-param="last_name"></with-param>
+            <with-param name="role" query-param="role"></with-param>
+            <with-param name="user_id" query-param="user_id"></with-param>
+            <with-param name="password" query-param="password"></with-param>
+        </call-query>
+    </operation>
+    <operation name="insert_content_operation">
+        <call-query href="insert_content_query">
+            <with-param name="reads" query-param="reads"></with-param>
+            <with-param name="level" query-param="level"></with-param>
+            <with-param name="content_id" query-param="content_id"></with-param>
+            <with-param name="presenter" query-param="presenter"></with-param>
+        </call-query>
+    </operation>
+    <operation name="select_all_category_operation">
+        <call-query href="select_all_category_query"></call-query>
+    </operation>
+    <operation name="select_all_library_operation">
+        <call-query href="select_all_library_query"></call-query>
+    </operation>
+    <operation name="select_all_tag_operation">
+        <call-query href="select_all_tag_query"></call-query>
+    </operation>
+    <operation name="insert_category_operation">
+        <call-query href="insert_category_query">
+            <with-param name="category_name" query-param="category_name"></with-param>
+        </call-query>
+    </operation>
+    <operation name="insert_library_operation">
+        <call-query href="insert_library_query">
+            <with-param name="published_date" query-param="published_date"></with-param>
+            <with-param name="title" query-param="title"></with-param>
+            <with-param name="category_id" query-param="category_id"></with-param>
+            <with-param name="url" query-param="url"></with-param>
+        </call-query>
+    </operation>
+    <operation name="delete_content_operation">
+        <call-query href="delete_content_query">
+            <with-param name="content_id" query-param="content_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="select_with_key_content_operation">
+        <call-query href="select_with_key_content_query">
+            <with-param name="content_id" query-param="content_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="update_content_tag_operation">
+        <call-query href="update_content_tag_query">
+            <with-param name="content_id" query-param="content_id"></with-param>
+            <with-param name="tag_id" query-param="tag_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="select_with_key_tag_operation">
+        <call-query href="select_with_key_tag_query">
+            <with-param name="tag_id" query-param="tag_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="select_with_key_user_operation">
+        <call-query href="select_with_key_user_query">
+            <with-param name="user_id" query-param="user_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="delete_tag_operation">
+        <call-query href="delete_tag_query">
+            <with-param name="tag_id" query-param="tag_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="delete_content_tag_operation">
+        <call-query href="delete_content_tag_query">
+            <with-param name="content_id" query-param="content_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="update_category_operation">
+        <call-query href="update_category_query">
+            <with-param name="category_name" query-param="category_name"></with-param>
+            <with-param name="category_id" query-param="category_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="update_tag_operation">
+        <call-query href="update_tag_query">
+            <with-param name="tag_name" query-param="tag_name"></with-param>
+            <with-param name="tag_id" query-param="tag_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="insert_user_operation">
+        <call-query href="insert_user_query">
+            <with-param name="first_name" query-param="first_name"></with-param>
+            <with-param name="last_name" query-param="last_name"></with-param>
+            <with-param name="role" query-param="role"></with-param>
+            <with-param name="user_id" query-param="user_id"></with-param>
+            <with-param name="password" query-param="password"></with-param>
+        </call-query>
+    </operation>
+    <operation name="select_all_user_operation">
+        <call-query href="select_all_user_query"></call-query>
+    </operation>
+    <operation name="delete_category_operation">
+        <call-query href="delete_category_query">
+            <with-param name="category_id" query-param="category_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="select_with_key_content_tag_operation">
+        <call-query href="select_with_key_content_tag_query">
+            <with-param name="content_id" query-param="content_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="select_with_key_library_operation">
+        <call-query href="select_with_key_library_query">
+            <with-param name="content_id" query-param="content_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="select_with_key_category_operation">
+        <call-query href="select_with_key_category_query">
+            <with-param name="category_id" query-param="category_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="insert_tag_operation">
+        <call-query href="insert_tag_query">
+            <with-param name="tag_name" query-param="tag_name"></with-param>
+        </call-query>
+    </operation>
+    <operation name="update_webinar_operation">
+        <call-query href="update_webinar_query">
+            <with-param name="content_id" query-param="content_id"></with-param>
+            <with-param name="presenter" query-param="presenter"></with-param>
+        </call-query>
+    </operation>
+    <operation name="update_content_operation">
+        <call-query href="update_content_query">
+            <with-param name="reads" query-param="reads"></with-param>
+            <with-param name="content_id" query-param="content_id"></with-param>
+            <with-param name="level" query-param="level"></with-param>
+            <with-param name="presenter" query-param="presenter"></with-param>
+        </call-query>
+    </operation>
+    <operation name="delete_webinar_operation">
+        <call-query href="delete_webinar_query">
+            <with-param name="content_id" query-param="content_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="select_all_webinar_operation">
+        <call-query href="select_all_webinar_query"></call-query>
+    </operation>
+    <operation name="delete_user_operation">
+        <call-query href="delete_user_query">
+            <with-param name="user_id" query-param="user_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="delete_library_operation">
+        <call-query href="delete_library_query">
+            <with-param name="content_id" query-param="content_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="update_library_operation">
+        <call-query href="update_library_query">
+            <with-param name="published_date" query-param="published_date"></with-param>
+            <with-param name="title" query-param="title"></with-param>
+            <with-param name="content_id" query-param="content_id"></with-param>
+            <with-param name="category_id" query-param="category_id"></with-param>
+            <with-param name="url" query-param="url"></with-param>
+        </call-query>
+    </operation>
+    <operation name="select_with_key_webinar_operation">
+        <call-query href="select_with_key_webinar_query">
+            <with-param name="content_id" query-param="content_id"></with-param>
+        </call-query>
+    </operation>
+    <operation name="select_all_content_operation">
+        <call-query href="select_all_content_query"></call-query>
+    </operation>
+    <operation name="insert_webinar_operation">
+        <call-query href="insert_webinar_query">
+            <with-param name="content_id" query-param="content_id"></with-param>
+            <with-param name="presenter" query-param="presenter"></with-param>
+        </call-query>
+    </operation>
+    <operation name="select_all_content_tag_operation">
+        <call-query href="select_all_content_tag_query"></call-query>
+    </operation>
+    <!--resource method="GET" path="getTag" returnRequestStatus="true">
+        <call-query href="SQL_getTag">
+            <with-param name="tag_name" query-param="tag_name"/>
+        </call-query>
+    </resource-->
+    <!--SQL_getTag operations ends here-->
+</data>
