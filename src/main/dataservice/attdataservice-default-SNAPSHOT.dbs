@@ -10,11 +10,11 @@
     <query id="select_all_library_query_JSON" useConfig="default">
         <sql>SELECT content_id, category_id, title, published_date, url FROM library</sql>
         <result outputType="json">
-            <!--<element column="content_id" name="content_id" xsdType="xs:integer"/>
+            <element column="content_id" name="content_id" xsdType="xs:integer"/>
             <element column="category_id" name="category_id" xsdType="xs:integer"/>
             <element column="title" name="title" xsdType="xs:string"/>
             <element column="published_date" name="published_date" xsdType="xs:date"/>
-            <element column="url" name="url" xsdType="xs:string"/>-->
+            <element column="url" name="url" xsdType="xs:string"/>
             { "root": { "Library": { "content_id": $content_id, "category_id": $category_id,
             "title": $title, "published_date": $published_date, "url": $url } }}
         </result>
