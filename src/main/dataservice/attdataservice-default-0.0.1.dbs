@@ -1,9 +1,14 @@
 <data name="attdataservice-default-0.0.1" serviceNamespace="att" enableBatchRequests="true">
     <!--database connection code with config id default-->
     <config id="default">
-        <property name="driverClassName">com.mysql.jdbc.Driver</property>
+        <!--<property name="driverClassName">com.mysql.jdbc.Driver</property>
         <property name="url">jdbc:mysql://mysql-dev-01.cloud.wso2.com:3306/attdb_ananthanesh4519</property>
         <property name="username">attuser_Ysj2dWLI</property>
+        <property name="password">att#11</property>-->
+        <property name="driverClassName">com.mysql.jdbc.Driver</property>
+        <property name="url">jdbc:mysql://mysql-dev-01.cloud.wso2.com:3306/ATT_naasheerwso2
+        </property>
+        <property name="username">ATT_4w6oteMO</property>
         <property name="password">att#11</property>
 
 
