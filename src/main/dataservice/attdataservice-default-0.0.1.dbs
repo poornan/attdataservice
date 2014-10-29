@@ -35,6 +35,9 @@
             <element column="title" name="title" xsdType="xs:string"/>
             <element column="published_date" name="published_date" xsdType="xs:date"/>
             <element column="url" name="url" xsdType="xs:string"/>
+            <call-query href="select_with_key_category_query">
+                <with-param name="category_id" query-param="category_id"/>
+            </call-query>
         </result>
     </query>
     <query id="select_all_tag_query" useConfig="default">
