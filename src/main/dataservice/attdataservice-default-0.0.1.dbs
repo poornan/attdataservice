@@ -84,7 +84,7 @@
     <query id="select_with_key_contentTagL_query" useConfig="default">
         <sql>SELECT `tag_id`, `content_id` FROM `content_tag` WHERE `content_id`=?</sql>
         <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
-        <result element="tags">
+        <result element="tags" rowName="tag">
             <element column="tag_id" name="tag_id" xsdType="xs:integer"/>
             <element column="content_id" name="content_id" xsdType="xs:integer"/>
         </result>
