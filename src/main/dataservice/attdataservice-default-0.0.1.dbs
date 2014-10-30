@@ -14,7 +14,23 @@
     </config>
     <query id="select_all_library_query_JSON" useConfig="default">
         <sql>SELECT content_id, category_id, title, published_date, url FROM library</sql>
-        <result outputType="json">            {    "root": {        "Library": [{            "content_id": $content_id,            "category_id": $category_id,            "title": $title,            "published_date": $published_date,            "url": $url        }    ]}}                                                </result>
+        <result outputType="json">
+            {
+                "root":
+                {
+                    "Library":
+                    [
+                        {
+                        "content_id": $content_id,
+                        "category_id": $category_id,
+                        "title": $title,
+                        "published_date": $published_date,
+                        "url": $url
+                        }
+                    ]
+                }
+            }
+        </result>
     </query>
     <operation name="select_all_library_operation_JSON">
         <call-query href="select_all_library_query_JSON"/>
@@ -30,9 +46,6 @@
             <element column="title" name="title" xsdType="xs:string"/>
             <element column="published_date" name="published_date" xsdType="xs:date"/>
             <element column="url" name="url" xsdType="xs:string"/>
-            <!--<call-query href="select_with_key_category_query">
-                <with-param name="category_id" query-param="category_id"/>
-            </call-query>-->
         </result>
     </query>
     <query id="select_all_tag_query" useConfig="default">
