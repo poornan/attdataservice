@@ -52,6 +52,15 @@
             <call-query href="select_with_key_contentL_query">
                 <with-param name="content_id" query-param="content_id"/>
             </call-query>
+            <call-query href="select_with_key_webinarL_query">
+                <with-param name="content_id" query-param="content_id"/>
+            </call-query>
+            <call-query href="select_with_key_contentTagL_query">
+                <with-param name="content_id" query-param="content_id"/>
+            </call-query>
+            <call-query href="select_with_key_categoryL_query">
+                <with-param name="category_id" query-param="category_id"/>
+            </call-query>
         </result>
     </query>
     <query id="select_with_key_contentL_query" useConfig="default">
@@ -64,6 +73,37 @@
             <element column="reads" name="reads" xsdType="xs:string"/>
         </result>
     </query>
+    <query id="select_with_key_webinarL_query" useConfig="default">
+        <sql>SELECT `content_id`, `presenter` FROM `webinar` WHERE `content_id`=?</sql>
+        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+        <result element="webinar">
+            <element column="content_id" name="content_id" xsdType="xs:integer"/>
+            <element column="presenter" name="presenter" xsdType="xs:string"/>
+        </result>
+    </query>
+    <query id="select_with_key_contentTagL_query" useConfig="default">
+        <sql>SELECT `tag_id`, `content_id` FROM `content_tag` WHERE `content_id`=?</sql>
+        <param name="content_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+        <result element="tags" rowName="tag">
+            <element column="tag_id" name="tag_id" xsdType="xs:integer"/>
+            <element column="content_id" name="content_id" xsdType="xs:integer"/>
+        </result>
+    </query>
+    <query id="select_with_key_categoryL_query" useConfig="default">
+        <sql>SELECT `category_id`, `category_name` FROM `category` WHERE `category_id`=?</sql>
+        <param name="category_id" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+        <result element="category">
+            <element column="category_id" name="category_id" xsdType="xs:integer"/>
+            <element column="category_name" name="category_name" xsdType="xs:string"/>
+        </result>
+    </query>
+
+
+
+
+
+
+
     <query id="select_all_library_query" useConfig="default">
         <sql>SELECT content_id, category_id, title, published_date, url FROM library</sql>
         <result element="libraryCollection" rowName="library">
