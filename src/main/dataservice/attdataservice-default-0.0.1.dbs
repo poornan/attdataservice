@@ -14,19 +14,14 @@
     </config>
     <query id="select_all_library_query_JSON" useConfig="default">
         <sql>SELECT content_id, category_id, title, published_date, url FROM library</sql>
-        <result outputType="json">
-            <element column="content_id" name="content_id" xsdType="xs:integer"/>
-            <element column="category_id" name="category_id" xsdType="xs:integer"/>
-            <element column="title" name="title" xsdType="xs:string"/>
-            <element column="published_date" name="published_date" xsdType="xs:date"/>
-            <element column="url" name="url" xsdType="xs:string"/>
-            { "root": { "Library": [{ "content_id": $content_id, "category_id": $category_id,
-            "title": $title, "published_date": $published_date, "url": $url } ]}}
-        </result>
+        <result outputType="json">            {    "root": {        "Library": [{            "content_id": $content_id,            "category_id": $category_id,            "title": $title,            "published_date": $published_date,            "url": $url        }    ]}}                                                </result>
     </query>
     <operation name="select_all_library_operation_JSON">
         <call-query href="select_all_library_query_JSON"/>
     </operation>
+    <resource path="/getJSON" method="GET" returnRequestStatus="true">
+        <call-query href="select_all_library_query_JSON"/>
+    </resource>
     <query id="select_all_library_query" useConfig="default">
         <sql>SELECT content_id, category_id, title, published_date, url FROM library</sql>
         <result element="libraryCollection" rowName="library">
